@@ -22,6 +22,8 @@
 | **8.5** | **二维数组变换、旋转、遍历** | **[矩阵操作（重点技巧）](#85-矩阵操作重点技巧)** |
 | 9 | 下一个更大元素、滑动窗口最值 | [单调栈 / 单调队列](#9-单调栈--单调队列) |
 | 10 | 集合合并、判断联通 | [并查集](#10-并查集) |
+| **10.5** | **边界总写错、模板不熟** | **[边界易错点 + 常用函数模板](#105-边界易错点--常用函数模板)** |
+| **11** | **容器/API 日常使用（非算法）** | **[STL 日常速查（非算法）](#11-stl-日常速查非算法)** |
 
 ---
 
@@ -968,6 +970,146 @@ struct DSU {
         components--;
     }
 };
+```
+
+---
+
+## 10.5 边界易错点 + 常用函数模板
+
+> 这部分不是新算法，而是 **最容易丢分的实现细节**。建议考前反复看。
+
+### 边界易错点清单（高频）
+
+| 场景 | 容易写错 | 推荐写法 |
+|------|---------|---------|
+| 下标范围 | `for (i=0; i<=n; i++)` 越界 | `for (int i = 0; i < n; i++)` |
+| 二分边界 | `while (l <= r)` 时更新不一致导致死循环 | 左闭右闭就配套 `mid=(l+r)/2` 与 `l=mid+1/r=mid-1`；左闭右开常用 `while (l < r)` |
+| 前缀和 | 把 `pre` 开成 `n` 导致 `pre[r+1]` 越界 | `vector<long long> pre(n+1,0)` |
+| 差分 | 对 `d[r+1]` 写入越界 | `d` 至少开 `n+2` |
+| 滑动窗口 | 忘记先弹出过期下标再取答案 | 固定顺序：过期出队 → 维护单调性 → 入队 → 取值 |
+| 网格 DFS/BFS | `x/y` 越界判断不统一 | 封装 `inGrid(x,y,n,m)`，所有地方复用 |
+| 整型溢出 | `int` 乘法爆 32 位 | 涉及乘法/前缀和用 `long long` |
+
+---
+
+### 常用函数模板（可直接套）
+
+#### 1）网格边界判断
+
+```cpp
+inline bool inGrid(int x, int y, int n, int m) {
+    return x >= 0 && x < n && y >= 0 && y < m;
+}
+```
+
+#### 2）左闭右开二分（找第一个 `>= target`）
+
+```cpp
+int lowerBound(const vector<int>& a, int target) {
+    int l = 0, r = (int)a.size(); // [l, r)
+    while (l < r) {
+        int mid = l + (r - l) / 2;
+        if (a[mid] >= target) r = mid;
+        else l = mid + 1;
+    }
+    return l; // 可能等于 a.size()
+}
+```
+
+#### 3）前缀和区间查询（0-indexed）
+
+```cpp
+vector<long long> buildPrefix(const vector<int>& a) {
+    int n = a.size();
+    vector<long long> pre(n + 1, 0);
+    for (int i = 0; i < n; i++) pre[i + 1] = pre[i] + a[i];
+    return pre;
+}
+
+long long rangeSum(const vector<long long>& pre, int l, int r) {
+    return pre[r + 1] - pre[l];
+}
+```
+
+#### 4）统一方向数组（网格四联通）
+
+```cpp
+int dx[4] = {-1, 1, 0, 0};
+int dy[4] = {0, 0, -1, 1};
+```
+
+---
+
+## 11. STL 日常速查（非算法）
+
+> 这章是“写题常用 API 备忘录”，偏工程/语法，不算算法本体。
+
+### 1）`vector` / `string` 常用
+
+```cpp
+vector<int> a;
+a.push_back(3);
+a.pop_back();
+a.resize(10, 0);
+int n = a.size();
+
+string s = "abc";
+s += 'd';
+reverse(s.begin(), s.end());
+```
+
+### 2）排序、去重、反转
+
+```cpp
+sort(a.begin(), a.end());
+sort(a.begin(), a.end(), greater<int>()); // 降序
+
+a.erase(unique(a.begin(), a.end()), a.end()); // 先排序再 unique
+reverse(a.begin(), a.end());
+```
+
+### 3）二分与有序容器查询
+
+```cpp
+auto it1 = lower_bound(a.begin(), a.end(), x); // 第一个 >= x
+auto it2 = upper_bound(a.begin(), a.end(), x); // 第一个 >  x
+bool has = binary_search(a.begin(), a.end(), x);
+```
+
+### 4）`map / unordered_map` 统计频次
+
+```cpp
+unordered_map<int, int> cnt;
+for (int x : a) cnt[x]++;
+
+if (cnt.count(5)) {
+    // 键 5 存在
+}
+```
+
+### 5）队列 / 栈 / 双端队列
+
+```cpp
+queue<int> q; q.push(1); q.front(); q.pop();
+stack<int> st; st.push(1); st.top(); st.pop();
+deque<int> dq; dq.push_back(1); dq.push_front(2);
+```
+
+### 6）优先队列（堆）
+
+```cpp
+priority_queue<int> maxHeap; // 大根堆
+priority_queue<int, vector<int>, greater<int>> minHeap; // 小根堆
+```
+
+### 7）常用数值工具
+
+```cpp
+long long sum = accumulate(a.begin(), a.end(), 0LL);
+int mx = *max_element(a.begin(), a.end());
+int mn = *min_element(a.begin(), a.end());
+
+iota(a.begin(), a.end(), 0); // 填充 0,1,2,...
 ```
 
 ---
