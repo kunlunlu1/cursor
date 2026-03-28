@@ -1146,6 +1146,33 @@ int mn = *min_element(a.begin(), a.end());
 iota(a.begin(), a.end(), 0); // 填充 0,1,2,...
 ```
 
+### 8）字符操作 / 字符映射 / 字符转换 / ASCII
+
+- 字符类别判断优先用 `isalpha/isdigit/islower/isupper`（记得 `#include <cctype>`）。
+- `char` 与 ASCII 码可互转；字母大小写可用 `tolower/toupper`。
+- 统计字符频次可用 `vector<int>(128)`（标准 ASCII）或 `unordered_map<char,int>`（更通用）。
+
+```cpp
+string s = "aB9z";
+
+for (char &c : s) {
+    if (isalpha(c)) {
+        c = tolower(c); // 统一转小写
+    }
+}
+
+vector<int> cnt(128, 0);      // ASCII 频次
+for (char c : s) cnt[(int)c]++;
+
+int codeA = (int)'A';         // 65
+char ch = (char)(codeA + 32); // 'a'
+
+unordered_map<char, char> mp; // 字符映射
+mp['('] = ')';
+mp['['] = ']';
+mp['{'] = '}';
+```
+
 ---
 
 ## 各算法时间复杂度速查
