@@ -7,6 +7,7 @@
 ## 📌 配套资料
 
 - **[算法速查手册（ALGORITHMS.md）](ALGORITHMS.md)**：遇到什么题用什么算法，含 23 道例题与完整解析代码 ⭐
+- **[近年真题汇编（PAST_EXAMS.md）](PAST_EXAMS.md)**：2020–2022 年 CCF CSP 真题，含完整题目描述、C++ 代码与算法标注 ⭐
 
 ---
 
