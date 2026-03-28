@@ -1038,6 +1038,20 @@ int dx[4] = {-1, 1, 0, 0};
 int dy[4] = {0, 0, -1, 1};
 ```
 
+#### 5）复杂排序模板（二维数组/二元组）
+
+> 需求：先按第一关键字升序；若第一关键字相同，再按第二关键字升序。
+
+```cpp
+vector<vector<int>> a = {{2, 3}, {1, 5}, {2, 1}, {1, 2}};
+sort(a.begin(), a.end(), [](const vector<int>& x, const vector<int>& y) {
+    if (x[0] != y[0]) return x[0] < y[0]; // 第一关键字
+    return x[1] < y[1];                   // 第二关键字
+});
+```
+
+> 若是 `vector<pair<int,int>>`，可直接 `sort(v.begin(), v.end())`（默认按 first，再按 second 升序）。
+
 ---
 
 ## 11. STL 日常速查（非算法）
@@ -1045,6 +1059,9 @@ int dy[4] = {0, 0, -1, 1};
 > 这章是“写题常用 API 备忘录”，偏工程/语法，不算算法本体。
 
 ### 1）`vector` / `string` 常用
+
+- `vector` 适合动态数组；`resize` 会改变长度，`size()` 返回当前元素个数。
+- `string` 支持和容器类似的迭代器操作，可直接配合 `reverse`、`sort`。
 
 ```cpp
 vector<int> a;
@@ -1060,6 +1077,9 @@ reverse(s.begin(), s.end());
 
 ### 2）排序、去重、反转
 
+- `unique` 只会把“相邻重复”挪到后面，所以通常要先 `sort` 再 `erase`。
+- 自定义排序建议先明确“第一关键字/第二关键字”的优先级。
+
 ```cpp
 sort(a.begin(), a.end());
 sort(a.begin(), a.end(), greater<int>()); // 降序
@@ -1070,6 +1090,8 @@ reverse(a.begin(), a.end());
 
 ### 3）二分与有序容器查询
 
+- 这些 API 要求区间有序；返回的是迭代器，使用前注意是否等于 `end()`。
+
 ```cpp
 auto it1 = lower_bound(a.begin(), a.end(), x); // 第一个 >= x
 auto it2 = upper_bound(a.begin(), a.end(), x); // 第一个 >  x
@@ -1077,6 +1099,9 @@ bool has = binary_search(a.begin(), a.end(), x);
 ```
 
 ### 4）`map / unordered_map` 统计频次
+
+- `map` 有序（红黑树，`O(log n)`）；`unordered_map` 无序（哈希，均摊 `O(1)`）。
+- 只判断是否存在时优先用 `count`，避免不必要的插入。
 
 ```cpp
 unordered_map<int, int> cnt;
@@ -1089,6 +1114,9 @@ if (cnt.count(5)) {
 
 ### 5）队列 / 栈 / 双端队列
 
+- `queue` 先进先出，`stack` 后进先出；`deque` 支持两端插入删除。
+- 访问前先判空：`if (!q.empty()) ...`，避免越界访问。
+
 ```cpp
 queue<int> q; q.push(1); q.front(); q.pop();
 stack<int> st; st.push(1); st.top(); st.pop();
@@ -1097,12 +1125,18 @@ deque<int> dq; dq.push_back(1); dq.push_front(2);
 
 ### 6）优先队列（堆）
 
+- 默认是大根堆；要小根堆就传 `greater<T>`。
+- 适合“反复取当前最值并插入新值”的场景。
+
 ```cpp
 priority_queue<int> maxHeap; // 大根堆
 priority_queue<int, vector<int>, greater<int>> minHeap; // 小根堆
 ```
 
 ### 7）常用数值工具
+
+- `accumulate` 初始值写 `0LL` 可防止整型求和溢出。
+- `max_element/min_element` 返回迭代器，记得解引用。
 
 ```cpp
 long long sum = accumulate(a.begin(), a.end(), 0LL);
