@@ -4,6 +4,37 @@
 
 ---
 
+## 🔰 GitHub 新手——如何找到这里的文件？
+
+> 如果你是第一次使用 GitHub，按以下步骤查看本仓库中的所有资料：
+
+**方法一：直接点击文件名（最简单）**
+
+在本页面（README）往上看，GitHub 页面顶部会列出仓库里的所有文件，直接点击文件名即可查看内容：
+
+| 文件名 | 内容 |
+|--------|------|
+| 📄 [README.md](README.md) | 你现在正在看的这个文件，CCF CSP 300+ 分备考总指南 |
+| 📄 [ALGORITHMS.md](ALGORITHMS.md) | 算法速查手册——遇到什么题用什么算法（含23道例题+C++代码） |
+| 📄 [PAST_EXAMS.md](PAST_EXAMS.md) | 近年真题汇编——7道CCF CSP真题，完整题面+C++解题代码+算法标注 |
+
+**方法二：如果你看到的还是旧版本（只有README），说明当前在 main 分支**
+
+GitHub 的改动存放在不同的「分支（branch）」里，正式合并前需要切换：
+
+1. 在仓库页面，找到左上角写着 **`main`** 的下拉按钮（Branch 选择器）
+2. 点击它，在列表中选择 **`copilot/add-csp-certification-solution`**
+3. 页面刷新后，你就能看到 `ALGORITHMS.md` 和 `PAST_EXAMS.md` 两个新文件了
+
+**方法三：查看 Pull Request（PR）**
+
+1. 点击仓库页面顶部的 **「Pull requests」** 标签
+2. 找到标题包含「CCF CSP」或「ALGORITHMS」的 PR，点击进入
+3. 点击「**Files changed**」标签，可以看到所有新增内容
+4. 点击「**Merge pull request**」可以将改动合并到主分支，之后在 main 分支就能直接看到
+
+---
+
 ## 📌 配套资料
 
 - **[算法速查手册（ALGORITHMS.md）](ALGORITHMS.md)**：遇到什么题用什么算法，含 23 道例题与完整解析代码 ⭐
